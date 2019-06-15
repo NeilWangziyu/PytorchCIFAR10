@@ -5,5 +5,5 @@ Clone and modify from
 https://github.com/kuangliu/pytorch-cifar.git
 
 ` ` ` bash
-python main.py --GPU False
+python main.py --GPU False --model resnet
 ` ` `
