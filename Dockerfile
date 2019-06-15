@@ -15,6 +15,6 @@ COPY main.py /app/
 
 ENV ENVIRONMENT local
 
-ENTRYPOINT python ./main.py
+ENTRYPOINT python ./main.py --GPU False --model resnet
 
 
