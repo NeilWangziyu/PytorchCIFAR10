@@ -17,6 +17,8 @@ from models import *
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='cifar10')
     parser.add_argument('--GPU',help="whether use GPU")
+    parser.add_argument('--model',default="resnet" , help="choose which model to build")
+
 
     args=parser.parse_args()
 
@@ -44,30 +46,39 @@ if __name__ == "__main__":
     ])
 
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=128, shuffle=True, num_workers=2)
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True, num_workers=2)
 
     testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
-    testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False, num_workers=2)
+    testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=False, num_workers=2)
 
     classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
     # Model
     print('==> Building model..')
-    # net = VGG('VGG19')
-    net = ResNet18()
+    if args.model == 'resnet':
+        net = ResNet18()
+    elif args.model == 'vgg':
+        net = VGG('VGG19')
+    elif args.model == 'googlenet':
+        net = GoogLeNet()
+    elif args.model == 'densenet':
+        net = DenseNet121()
+    elif net == 'mobilenet':
+        net = MobileNet()
+    elif net == 'mobilenet2':
+        net = MobileNetV2()
+    else:
+        raise ValueError("must input a right model number, for example:resnet, vgg, googlenet, densenet,mobilenet,mobilenet2")
+
     # net = PreActResNet18()
-    # net = GoogLeNet()
-    # net = DenseNet121()
     # net = ResNeXt29_2x64d()
-    # net = MobileNet()
-    # net = MobileNetV2()
     # net = DPN92()
     # net = ShuffleNetG2()
     # net = SENet18()
     # net = ShuffleNetV2(1)
     # net = EfficientNetB0()
 
-
+    # print(net)
     if use_GPU:
         net.cuda()
 
