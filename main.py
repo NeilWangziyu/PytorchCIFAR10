@@ -86,9 +86,10 @@ if __name__ == "__main__":
     optimizer = optim.SGD(net.parameters(), lr=0.1, momentum=0.9, weight_decay=5e-4)
 
 
-
+    
 
     for epoch in range(200):
+        net.train()
         for step, (b_x, b_y) in enumerate(trainloader):
             if use_GPU:
                 b_x = b_x.cuda()
@@ -101,6 +102,7 @@ if __name__ == "__main__":
             optimizer.step()
         
         if epoch % 10 == 0:
+            net.eval()
             correct = 0
             total = 0
             for step, (b_x, b_y) in enumerate(testloader):
