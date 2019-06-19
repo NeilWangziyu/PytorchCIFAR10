@@ -125,5 +125,5 @@ if __name__ == "__main__":
             print("Epoch {}, Accuracy:{}".format(epoch, correct/total))
     t_end = time.time()
     print("Finish Training")
-    print("Time consuming: {} seconds".format(t_end - t_start)
+    print("Time consuming: {} seconds".format(t_end - t_start))
     
