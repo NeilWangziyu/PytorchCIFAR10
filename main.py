@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
 
     print("==> Start training..")
-    t_start = time.clock()
+    t_start = time.time()
 
     for epoch in range(200):
         net.train()
