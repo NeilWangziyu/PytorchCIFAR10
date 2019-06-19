@@ -7,9 +7,7 @@ WORKDIR /app/
 COPY requirements.txt /app/
 RUN pip install -r ./requirements.txt
 
-COPY  /models/* /app/models/
-
-COPY main.py /app/
+COPY * /app/
 
 #ENTRYPOINT /bin/bash
 
