@@ -10,6 +10,7 @@ import torchvision.transforms as transforms
 
 import os
 import argparse
+import time
 
 from models import *
 
@@ -86,7 +87,8 @@ if __name__ == "__main__":
     optimizer = optim.SGD(net.parameters(), lr=0.1, momentum=0.9, weight_decay=5e-4)
 
 
-    
+    print("==> Start training..")
+    t_start = time.clock()
 
     for epoch in range(200):
         net.train()
@@ -121,5 +123,7 @@ if __name__ == "__main__":
                 correct += right
             
             print("Epoch {}, Accuracy:{}".format(epoch, correct/total))
-
+    t_end = time.time()
     print("Finish Training")
+    print("Time consuming: {} seconds".format(t_end - t_start)
+    
