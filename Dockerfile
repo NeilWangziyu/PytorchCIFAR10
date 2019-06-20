@@ -1,4 +1,4 @@
-FROM ufoym/deepo:cpu
+FROM ufoym/deepo
 
 MAINTAINER t-ziw@microsoft.com
 
