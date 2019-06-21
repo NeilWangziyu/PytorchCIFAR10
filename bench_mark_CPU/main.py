@@ -96,7 +96,7 @@ if __name__ == "__main__":
     print("Start Training time:{}".format(time.asctime(time.localtime(time.time()))))
 
     for epoch in range(epoch_number):
-        print("epoch:{}, time: {}".format(epoch, time.asctime(time.localtime(time.time())))
+        print("epoch:{}, time: {}".format(epoch, time.asctime(time.localtime(time.time()))))
 
         net.train()
         for step, (b_x, b_y) in enumerate(trainloader):

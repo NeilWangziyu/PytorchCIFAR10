@@ -18,25 +18,32 @@ Totally four parameters:
 --learningRate default:0.1
 
 On local(suzlab1080-012):
+
 CPU: 
+
 ` ` ` bash
 python3.6 /pytorch_train/bench_mark_GPU/main.py --GPU True --model resnet --epoch 200 
 ` ` `
 
 GPU: 
+
 ` ` ` bash
 python3.6 /pytorch_train/bench_mark_CPU/main.py --GPU False --model resnet --epoch 200
 ` ` `
 
 
 On Docker:
+
 In docker image, running the code would be use the default parameter
+
 For GPU test:  
+
 ` ` ` bash
 docker run carinapaas.azurecr.io/cgc/testcifar10_gpu 
 ` ` `
 
 For CPU test:  
+
 ` ` ` bash
 docker run carinapaas.azurecr.io/cgc/testcifar10_cpu 
 ` ` `
