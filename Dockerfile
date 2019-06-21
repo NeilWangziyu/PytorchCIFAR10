@@ -1,4 +1,4 @@
-FROM ufoym/deepo:cpu
+FROM ufoym/deepo
 
 MAINTAINER t-ziw@microsoft.com
 
@@ -6,6 +6,8 @@ WORKDIR /app/
 
 COPY requirements.txt /app/
 RUN pip install -r ./requirements.txt
+
+COPY models/* /app/models/
 
 COPY * /app/
 
