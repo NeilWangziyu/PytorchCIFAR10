@@ -39,13 +39,16 @@ In docker image, running the code would be use the default parameter
 For GPU test:  
 
 ` ` ` bash
-docker run carinapaas.azurecr.io/cgc/testcifar10_gpu 
+docker run -it carinapaas.azurecr.io/cgc/testcifar10_gpu 
+
+python main.py --GPU True --model resnet --epoch 200
 ` ` `
 
 For CPU test:  
 
 ` ` ` bash
-docker run carinapaas.azurecr.io/cgc/testcifar10_cpu 
+docker run -it carinapaas.azurecr.io/cgc/testcifar10_cpu
+python main.py --GPU False --model resnet --epoch 200 
 ` ` `
 
 
