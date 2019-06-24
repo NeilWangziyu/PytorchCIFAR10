@@ -21,7 +21,7 @@ if __name__ == "__main__":
     parser.add_argument('--model',default="resnet" , help="choose which model to build")
     parser.add_argument('--epoch',default="200" , help="epoch number")
     parser.add_argument('--learningRate',default="0.1" , help="epoch number")
-
+    parser.add_argument('--evaluation',default="False" , help="evaluation or not")
 
     args=parser.parse_args()
     epoch_number = int(args.epoch)
@@ -35,6 +35,12 @@ if __name__ == "__main__":
 
     print("USE GPU:", use_GPU)
 
+    if args.evaluation == 'False':
+        evaluation = False
+        print("Dont evaluation")
+    else:
+        evaluation = True
+        print("Evaluation during training and testing after training")
 
     # Data
     print('==> Preparing data..')
@@ -51,10 +57,10 @@ if __name__ == "__main__":
     ])
 
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True, num_workers=2)
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True)
 
     testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
-    testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=False, num_workers=2)
+    testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=False)
 
     classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
@@ -109,27 +115,30 @@ if __name__ == "__main__":
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+
+        print("Epoch {}, Time:{}".format(epoch, time.asctime(time.localtime(time.time()))))
         
-        if epoch % 10 == 0:
-            net.eval()
-            correct = 0
-            total = 0
-            for step, (b_x, b_y) in enumerate(testloader):
-                if use_GPU:
-                    b_x = b_x.cuda()
-                    b_y = b_y.cuda()
-                testoutput = net(b_x)
+        if evaluation:
+            if epoch % 10 == 0:
+                net.eval()
+                correct = 0
+                total = 0
+                for step, (b_x, b_y) in enumerate(testloader):
+                    if use_GPU:
+                        b_x = b_x.cuda()
+                        b_y = b_y.cuda()
+                    testoutput = net(b_x)
 
-                if use_GPU:
-                    pre_y = torch.max(testoutput, 1)[1].cuda().data.squeeze()
-                else:
-                    pre_y = torch.max(testoutput, 1)[1].data.squeeze()
+                    if use_GPU:
+                        pre_y = torch.max(testoutput, 1)[1].cuda().data.squeeze()
+                    else:
+                        pre_y = torch.max(testoutput, 1)[1].data.squeeze()
 
-                right = torch.sum(pre_y==b_y).type(torch.FloatTensor)
-                total += b_y.size()[0]
-                correct += right
-            
-            print("Epoch {}, Accuracy:{}".format(epoch, correct/total))
+                    right = torch.sum(pre_y==b_y).type(torch.FloatTensor)
+                    total += b_y.size()[0]
+                    correct += right
+                
+                print("Epoch {}, Accuracy:{}".format(epoch, correct/total))
     t_end = time.time()
     print("Finish Training")
     print("Time consuming: {} seconds".format(t_end - t_start))

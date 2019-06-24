@@ -21,6 +21,8 @@ if __name__ == "__main__":
     parser.add_argument('--model',default="resnet" , help="choose which model to build")
     parser.add_argument('--epoch',default="200" , help="epoch number")
     parser.add_argument('--learningRate',default="0.1" , help="epoch number")
+    parser.add_argument('--evaluation',default="False" , help="evaluation or not")
+
 
     args=parser.parse_args()
     
@@ -34,6 +36,12 @@ if __name__ == "__main__":
 
     print("USE GPU:", use_GPU)
 
+    if args.evaluation == 'False':
+        evaluation = False
+        print("Dont evaluation")
+    else:
+        evaluation = True
+        print("Evaluation during training and testing after training")
 
     # Data
     print('==> Preparing data..')
@@ -107,27 +115,28 @@ if __name__ == "__main__":
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-        
-        if epoch % 10 == 0:
-            net.eval()
-            correct = 0
-            total = 0
-            for step, (b_x, b_y) in enumerate(testloader):
-                if use_GPU:
-                    b_x = b_x.cuda()
-                    b_y = b_y.cuda()
-                testoutput = net(b_x)
 
-                if use_GPU:
-                    pre_y = torch.max(testoutput, 1)[1].cuda().data.squeeze()
-                else:
-                    pre_y = torch.max(testoutput, 1)[1].data.squeeze()
+        if evaluation:
+            if epoch % 10 == 0:
+                net.eval()
+                correct = 0
+                total = 0
+                for step, (b_x, b_y) in enumerate(testloader):
+                    if use_GPU:
+                        b_x = b_x.cuda()
+                        b_y = b_y.cuda()
+                    testoutput = net(b_x)
 
-                right = torch.sum(pre_y==b_y).type(torch.FloatTensor)
-                total += b_y.size()[0]
-                correct += right
-            
-            print("Epoch {}, Accuracy:{}".format(epoch, correct/total))
+                    if use_GPU:
+                        pre_y = torch.max(testoutput, 1)[1].cuda().data.squeeze()
+                    else:
+                        pre_y = torch.max(testoutput, 1)[1].data.squeeze()
+
+                    right = torch.sum(pre_y==b_y).type(torch.FloatTensor)
+                    total += b_y.size()[0]
+                    correct += right
+                
+                print("Epoch {}, Accuracy:{}".format(epoch, correct/total))
     t_end = time.time()
     print("Finish Training")
     print("Time consuming: {} seconds".format(t_end - t_start))
