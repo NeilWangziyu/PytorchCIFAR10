@@ -17,18 +17,20 @@ Totally four parameters:
 
 --learningRate default:0.1
 
+--evaluation default:False
+
 On local(suzlab1080-012):
 
 CPU: 
 
 ` ` ` bash
-python3.6 /pytorch_train/bench_mark_GPU/main.py --GPU True --model resnet --epoch 200 
+python3.6 /pytorch_train/bench_mark_GPU/main.py --GPU True --model resnet --epoch 200 --evaluation True
 ` ` `
 
 GPU: 
 
 ` ` ` bash
-python3.6 /pytorch_train/bench_mark_CPU/main.py --GPU False --model resnet --epoch 200
+python3.6 /pytorch_train/bench_mark_CPU/main.py --GPU False --model resnet --epoch 200 --evaluation True
 ` ` `
 
 
@@ -41,14 +43,14 @@ For GPU test:
 ` ` ` bash
 docker run -it carinapaas.azurecr.io/cgc/testcifar10_gpu 
 
-python main.py --GPU True --model resnet --epoch 200
+python main.py --GPU True --model resnet --epoch 200 --evaluation True
 ` ` `
 
 For CPU test:  
 
 ` ` ` bash
 docker run -it carinapaas.azurecr.io/cgc/testcifar10_cpu
-python main.py --GPU False --model resnet --epoch 200 
+python main.py --GPU False --model resnet --epoch 200 --evaluation True
 ` ` `
 
 
@@ -110,7 +112,7 @@ On CAP:
 
             }, 
 
-            "command": "python /app/main.py --GPU True --model resnet --epoch 200", 
+            "command": "python /app/main.py --GPU True --model resnet --epoch 200 --evaluation True", 
 
             "image": "carinapaas.azurecr.io/cgc/testcifar10_gpu" 
 
@@ -200,7 +202,7 @@ On CAP:
 
             }, 
 
-            "command": "python /app/main.py --GPU False --model resnet --epoch 200", 
+            "command": "python /app/main.py --GPU False --model resnet --epoch 200 --evaluation True", 
 
             "image": "carinapaas.azurecr.io/cgc/testcifar10_cpu" 
 
